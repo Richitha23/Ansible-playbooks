@@ -1,0 +1,27 @@
+---
+- hosts: webservers
+  user: ansible
+  become: true
+  connection: ssh
+  tasks:
+ 
+     - name: Install Java17 on Host Machines
+       action: yum pkg=java17 state=present
+ 
+     - name: Install python3 on Host Machines
+       action: yum pkg=python3 state=present
+
+     - name: Install MySql on Host Machines
+       action: yum pkg=mariadb105 state=present
+
+     - name: Install HTTPD on Host Machines
+       action: yum pkg=httpd state=present
+ 
+     - name: Start HTTPD Server on Host Machines
+       action: service name=httpd state=started
+
+     - name: Stop HTTPD Server on Host Machines
+       action: service name=httpd state=stopped
+
+     - name: Restart HTTPD Server on Host Machines
+       action: service name=httpd state=restarted
