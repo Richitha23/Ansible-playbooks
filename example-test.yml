@@ -1,5 +1,5 @@
 ---
-- hosts: webserver
+- hosts: webservers
   user: ansible
   become: true
   connection: ssh
@@ -17,5 +17,5 @@
      - name: Stop Docker Server on Host Machines
        action: service name=docker state=stopped
 
-     - name: Restart the Dockert Server on Host Machines
+     - name: Restart the Docker Server on Host Machines
        action: service name-docker state=restarted
