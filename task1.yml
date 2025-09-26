@@ -1,0 +1,41 @@
+---
+- hosts: webservers
+  user: ansible
+  become: true
+  connection: ssh
+  tasks:
+
+    - name: Install Git on Host Machines
+      action: yum pkg=git state=present
+
+    - name: Install Node.js on Host Machines
+      action: yum pkg=nodejs state=present
+    - name: Install HTTPD on Host Machines
+      action: yum pkg=httpd state=present
+
+    - name: Start HTTPD Server on Host Machines
+      action: service name=httpd state=started
+
+    - name: Clone Flipkart Clone Repository
+      git:
+        repo: https://github.com/Msocial123/Flipkart-Clone.git
+        dest: /var/www/html/flipkart-clone
+        version: main
+
+    - name: Install Node.js dependencies
+      command: npm install
+      args:
+        chdir: /var/www/html/flipkart-clone
+
+    - name: Build the Flipkart Clone App
+      command: npm run build
+      args:
+        chdir: /var/www/html/flipkart-clone
+    - name: Copy build files to Apache root
+      copy:
+        src: /var/www/html/flipkart-clone/build/
+        dest: /var/www/html/
+        remote_src: yes
+
+    - name: Restart HTTPD Server
+      action: service name=httpd state=restarted
